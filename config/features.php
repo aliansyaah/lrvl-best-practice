@@ -10,7 +10,11 @@ return [
     |
     */
 
-    'pipeline' => ['in_memory', 'database'],
+    /* 
+        Dengan memilih gateway seperti di bawah, kita memberi tahu pipeline untuk melihat database terlebih dahulu kemudian file .features.php sebagai backup 
+    */
+    'pipeline' => ['database', 'in_memory'],
+    // 'pipeline' => ['database'],
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +36,14 @@ return [
         'database' => [
             'driver' => 'database',
             'cache' => [
-                'ttl' => 600,
+                /* 
+                    'ttl' adalah waktu cache menyimpan data dalam satuan waktu detik.
+                    Jadi jika suatu fitur diakses beberapa kali dalam jangka waktu tersebut, hasil yang sama akan dikembalikan. Misalkan setting ttl = 120. Dalam waktu 120 detik, walaupun kita ubah flag jadi on/off, hasilnya akan sama (karena setting flag disimpan pada cache utk menghemat pembacaan query ke database).
+
+                    Jika ingin mengubah dgn segera, bisa dengan cara setting ttl dgn waktu yang tidak terlalu lama atau clear cache.
+                */
+                // 'ttl' => 600,   // 600 seconds
+                'ttl' => 15,
             ],
             'connection' => env('FEATURE_FLAG_DATABASE_CONNECTION'),
             'table' => env('FEATURE_FLAG_DATABASE_TABLE', 'features'),

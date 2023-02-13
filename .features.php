@@ -8,5 +8,6 @@ use Illuminate\Contracts\Foundation\Application;
 return static function (Application $app): array {
     return [
         // 'my.feature.flag' => true,
+        'laravel.version' => true
     ];
 };

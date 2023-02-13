@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test1', function () {
+    echo "Test 1";
+})->middleware('feature:laravel.version, off, 404');
+
+Route::get('/test2', function () {
+    echo "Test 2";
+});
