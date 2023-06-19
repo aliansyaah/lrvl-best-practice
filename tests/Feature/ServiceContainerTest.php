@@ -10,6 +10,7 @@ use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotSame;
+use function PHPUnit\Framework\assertSame;
 
 class ServiceContainerTest extends TestCase
 {
@@ -43,5 +44,37 @@ class ServiceContainerTest extends TestCase
         assertEquals("Eko", $person1->firstName);
         assertEquals("Eko", $person2->firstName);
         assertNotSame($person1, $person2);
+    }
+
+    public function testSingleton()
+    {
+        // Pakai singleton()
+        $this->app->singleton(Person::class, function ($app) {
+            return new Person("Eko", "Khannedy");
+        });
+
+        // $person1 & $person2 adalah object yg sama, karena menggunakan singleton
+        $person1 = $this->app->make(Person::class);     // new Person("Eko", "Khannedy"); if not exists
+        $person2 = $this->app->make(Person::class);     // return existing
+
+        assertEquals("Eko", $person1->firstName);
+        assertEquals("Eko", $person2->firstName);
+        assertSame($person1, $person2);
+    }
+
+    public function testInstance()
+    {
+        // Pakai instance()
+        $person = new Person("Eko", "Khannedy");
+        $this->app->instance(Person::class, $person);
+
+        // $person, $person1 & $person2 adalah object yg sama
+        $person1 = $this->app->make(Person::class);     // $person
+        $person2 = $this->app->make(Person::class);     // $person
+
+        assertEquals("Eko", $person1->firstName);
+        assertEquals("Eko", $person2->firstName);
+        assertSame($person, $person1);
+        assertSame($person1, $person2);
     }
 }
