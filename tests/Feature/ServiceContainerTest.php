@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use App\Data\Bar;
 use App\Data\Foo;
 use App\Data\Person;
+use App\Services\HelloService;
+use App\Services\HelloServiceIndonesia;
+use Closure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -111,5 +114,21 @@ class ServiceContainerTest extends TestCase
         // Testing menggunakan assertSame karena $foo, $bar1 & $bar2 merupakan object yg sama
         assertSame($foo, $bar1->foo);
         assertSame($bar1, $bar2);
+    }
+
+    // public function testHelloService()
+    public function testInterfaceToClass()
+    {
+        // Sebutkan interfacenya apa dan classnya apa
+        $this->app->singleton(HelloService::class, HelloServiceIndonesia::class);
+
+        // Atau bisa juga pakai closure
+        // $this->app->singleton(HelloService::class, function ($app){
+        //     return new HelloServiceIndonesia();
+        // });
+
+        // Ketika kita manggil interfacenya, yg dikembalikan adalah object dari implementasinya (HelloServiceIndonesia)
+        $helloService = $this->app->make(HelloService::class);
+        assertEquals("Halo Eko", $helloService->hello("Eko"));
     }
 }
