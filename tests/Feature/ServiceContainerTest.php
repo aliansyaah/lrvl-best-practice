@@ -91,4 +91,25 @@ class ServiceContainerTest extends TestCase
 
         assertNotSame($foo, $bar->foo);
     }
+
+    public function testDependencyInjectionInClosure()
+    {
+        // Service container Foo
+        $this->app->singleton(Foo::class, function ($app) {
+            return new Foo();
+        });
+        // Serivce container Bar
+        $this->app->singleton(Bar::class, function ($app) {
+            $foo = $app->make(Foo::class);  // ambil Foo dari service container Foo yg di atas
+            return new Bar($foo);
+        });
+
+        $foo = $this->app->make(Foo::class);
+        $bar1 = $this->app->make(Bar::class);
+        $bar2 = $this->app->make(Bar::class);
+
+        // Testing menggunakan assertSame karena $foo, $bar1 & $bar2 merupakan object yg sama
+        assertSame($foo, $bar1->foo);
+        assertSame($bar1, $bar2);
+    }
 }
