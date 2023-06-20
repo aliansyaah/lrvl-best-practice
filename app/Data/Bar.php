@@ -4,7 +4,8 @@ namespace App\Data;
 
 class Bar
 {
-    private Foo $foo;
+    // private Foo $foo;
+    public Foo $foo;
 
     /* Dependency injection di sini saat kita memasukkan object Foo ke dalam Bar, sehingga Bar bisa menggunakan object Foo */
     public function __construct(Foo $foo)

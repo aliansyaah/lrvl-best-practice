@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Data\Bar;
 use App\Data\Foo;
 use App\Data\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +15,7 @@ use function PHPUnit\Framework\assertSame;
 
 class ServiceContainerTest extends TestCase
 {
-    public function testDependencyInjection()
+    public function testDependency()
     {
         // Code di bawah sama dengan sintax "$foo = new Foo();"
         $foo = $this->app->make(Foo::class);    // new Foo()
@@ -76,5 +77,18 @@ class ServiceContainerTest extends TestCase
         assertEquals("Eko", $person2->firstName);
         assertSame($person, $person1);
         assertSame($person1, $person2);
+    }
+
+    public function testDependencyInjection()
+    {
+        // Pakai singleton agar tidak perlu membuat object baru terus-menerus
+        $this->app->singleton(Foo::class, function ($app) {
+            return new Foo();
+        });
+
+        $foo = $this->app->make(Foo::class);
+        $bar = $this->app->make(Bar::class);    // Ketika kita bikin/inject Bar, otomatis construction pada class Bar diinject object baru oleh Laravel
+
+        assertNotSame($foo, $bar->foo);
     }
 }
