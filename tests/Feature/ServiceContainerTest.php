@@ -115,8 +115,7 @@ class ServiceContainerTest extends TestCase
         assertSame($foo, $bar1->foo);
         assertSame($bar1, $bar2);
     }
-
-    // public function testHelloService()
+    
     public function testInterfaceToClass()
     {
         // Sebutkan interfacenya apa dan classnya apa
