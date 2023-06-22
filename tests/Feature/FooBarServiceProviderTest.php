@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\Data\Bar;
 use App\Data\Foo;
+use App\Services\HelloService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertSame;
 
 class FooBarServiceProviderTest extends TestCase
@@ -26,5 +28,14 @@ class FooBarServiceProviderTest extends TestCase
 
         assertSame($foo1, $bar1->foo);
         assertSame($foo2, $bar2->foo);
+    }
+
+    public function testPropertySingletons()
+    {
+        $helloService1 = $this->app->make(HelloService::class);
+        $helloService2 = $this->app->make(HelloService::class);
+
+        assertSame($helloService1, $helloService2);
+        assertEquals('Halo Eko', $helloService1->hello('Eko'));
     }
 }
