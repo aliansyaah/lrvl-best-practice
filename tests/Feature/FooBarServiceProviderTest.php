@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
 
 class FooBarServiceProviderTest extends TestCase
 {
@@ -37,5 +38,10 @@ class FooBarServiceProviderTest extends TestCase
 
         assertSame($helloService1, $helloService2);
         assertEquals('Halo Eko', $helloService1->hello('Eko'));
+    }
+
+    public function testEmpty()
+    {
+        assertTrue(true);
     }
 }

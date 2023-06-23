@@ -6,9 +6,11 @@ use App\Data\Bar;
 use App\Data\Foo;
 use App\Services\HelloService;
 use App\Services\HelloServiceIndonesia;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class FooBarServiceProvider extends ServiceProvider
+// class FooBarServiceProvider extends ServiceProvider
+class FooBarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
 
     public array $singletons = [
@@ -26,6 +28,7 @@ class FooBarServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // echo "FooBarServiceProvider";
         $this->app->singleton(Foo::class, function ($app) {
             return new Foo();
         });
@@ -45,5 +48,15 @@ class FooBarServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    /* 
+     * Override method provides pada class ServiceProvider
+     * Untuk memberi flag "lazy" pada class FooBarServiceProvider agar class yang dimasukkan
+     * pada method provides() di bawah tidak akan selalu diload, hanya diload ketika dibutuhkan.
+    */
+    public function provides()
+    {
+        return [HelloService::class, Foo::class, Bar::class];
     }
 }
