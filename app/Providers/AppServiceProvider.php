@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
          * So whenever anyone asks for a PaymentGateway, we do need to import that PaymentGateway
          * and pass the currency (in usd).
         */
-        $this->app->bind(PaymentGateway::class, function ($app) {
+        // $this->app->bind(PaymentGateway::class, function ($app) {
+        $this->app->singleton(PaymentGateway::class, function ($app) {
             return new PaymentGateway('usd');
         });
     }
