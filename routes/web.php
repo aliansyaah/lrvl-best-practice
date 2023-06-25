@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PayOrderController;
 use Illuminate\Support\Facades\Route;
 use YlsIdeas\FeatureFlags\Facades\Features;
 
@@ -44,3 +45,5 @@ Route::get('/test3', function () {
 
     // Manual set feature accessibility with HTTP status code
 })->middleware('feature:laravel.version,off,404');
+
+Route::get('pay', [PayOrderController::class, 'store']);
