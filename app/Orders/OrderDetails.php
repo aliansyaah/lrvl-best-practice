@@ -2,13 +2,18 @@
 
 namespace App\Orders;
 
-use App\Billing\PaymentGateway;
+use App\Billing\BankPaymentGateway;
+use App\Billing\PaymentGatewayContract;
 
 class OrderDetails
 {
     private $paymentGateway;
 
-    public function __construct(PaymentGateway $paymentGateway)
+    /* 
+     * Whenever OrderDetails gets created, it requests a BankPaymentGateway.
+     * Laravel going to look inside the CONTAINER (AppServiceProvider) to find a BankPaymentGateway.
+    */
+    public function __construct(PaymentGatewayContract $paymentGateway)
     {
         $this->paymentGateway = $paymentGateway;
     }
