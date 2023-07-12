@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Billing\BankPaymentGateway;
+use App\Billing\CreditPaymentGateway;
 use App\Billing\PaymentGatewayContract;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
         // $this->app->bind(BankPaymentGateway::class, function ($app) {
         // $this->app->singleton(BankPaymentGateway::class, function ($app) {
         $this->app->singleton(PaymentGatewayContract::class, function ($app) {
+            /* 
+             * Jika request metode pembayaran menggunakan credit, return CreditPaymentGateway
+             * http://localhost:8000/pay?credit=true
+            */
+            if (request()->has('credit')) {
+                return new CreditPaymentGateway('usd');
+            }
             return new BankPaymentGateway('usd');
         });
     }
