@@ -19,6 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pzn', function () {
+    return "Hello programmer zaman now";
+});
+
+Route::redirect('/youtube', '/pzn');
+
+// Jika kita ingin membuat hlm 404 atau not found, kita bisa memasukkan di static method fallback ini
+Route::fallback(function () {
+    return "404 by programmer zaman now";
+});
+
 // Contoh penerapan middleware feature di route
 Route::get('/test1', function () {
     echo "Test 1 <br>";
